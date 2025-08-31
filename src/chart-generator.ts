@@ -61,6 +61,23 @@ export async function generatePaybackChart(
   width: number = 600,
   height: number = 400
 ): Promise<Uint8Array> {
+  // Validação de entrada
+  if (!capexBRL || capexBRL <= 0) {
+    throw new Error('Valor do investimento (CAPEX) deve ser maior que zero');
+  }
+  
+  if (!economiaAnualBRL || economiaAnualBRL <= 0) {
+    throw new Error('Economia anual deve ser maior que zero');
+  }
+  
+  if (!anos || anos <= 0 || anos > 50) {
+    throw new Error('Período de análise deve estar entre 1 e 50 anos');
+  }
+  
+  if (!width || width <= 0 || !height || height <= 0) {
+    throw new Error('Dimensões do gráfico devem ser maiores que zero');
+  }
+
   const canvas = createCanvas(width, height);
   const ctx = canvas.getContext('2d');
 
@@ -120,13 +137,25 @@ export async function generatePaybackChart(
     }
   };
 
-  const chart = new Chart(ctx as any, config);
-  
-  // Converte canvas para PNG bytes
-  const buffer = canvas.toBuffer('image/png');
-  chart.destroy();
-  
-  return new Uint8Array(buffer);
+  let chart;
+  try {
+    chart = new Chart(ctx as any, config as any);
+    
+    // Aguarda renderização completa
+    await new Promise(resolve => setTimeout(resolve, 100));
+    
+    // Converte canvas para PNG bytes
+    const buffer = canvas.toBuffer('image/png');
+    
+    return new Uint8Array(buffer);
+  } catch (error) {
+    console.error('Erro na criação do gráfico de payback:', error);
+    throw new Error(`Falha na geração do gráfico de payback: ${error instanceof Error ? error.message : 'Erro desconhecido'}`);
+  } finally {
+    if (chart) {
+      chart.destroy();
+    }
+  }
 }
 
 /**
@@ -140,6 +169,22 @@ export async function generateGeracaoAnualChart(
   width: number = 600,
   height: number = 400
 ): Promise<Uint8Array> {
+  // Validação de entrada
+  if (!energiaMensalKWh || energiaMensalKWh <= 0) {
+    throw new Error('Energia mensal deve ser maior que zero');
+  }
+  
+  if (degradacaoAnual < 0 || degradacaoAnual > 0.05) {
+    throw new Error('Degradação anual deve estar entre 0% e 5%');
+  }
+  
+  if (!anos || anos <= 0 || anos > 50) {
+    throw new Error('Período de análise deve estar entre 1 e 50 anos');
+  }
+  
+  if (!width || width <= 0 || !height || height <= 0) {
+    throw new Error('Dimensões do gráfico devem ser maiores que zero');
+  }
   const canvas = createCanvas(width, height);
   const ctx = canvas.getContext('2d');
 
@@ -218,13 +263,25 @@ export async function generateGeracaoAnualChart(
     }
   };
 
-  const chart = new Chart(ctx as any, config);
-  
-  // Converte canvas para PNG bytes
-  const buffer = canvas.toBuffer('image/png');
-  chart.destroy();
-  
-  return new Uint8Array(buffer);
+  let chart;
+  try {
+    chart = new Chart(ctx as any, config as any);
+    
+    // Aguarda renderização completa
+    await new Promise(resolve => setTimeout(resolve, 100));
+    
+    // Converte canvas para PNG bytes
+    const buffer = canvas.toBuffer('image/png');
+    
+    return new Uint8Array(buffer);
+  } catch (error) {
+    console.error('Erro na criação do gráfico de geração anual:', error);
+    throw new Error(`Falha na geração do gráfico de geração anual: ${error instanceof Error ? error.message : 'Erro desconhecido'}`);
+  } finally {
+    if (chart) {
+      chart.destroy();
+    }
+  }
 }
 
 /**
@@ -297,13 +354,25 @@ export async function generateCostComparisonChart(
     }
   };
 
-  const chart = new Chart(ctx as any, config);
-  
-  // Converte canvas para PNG bytes
-  const buffer = canvas.toBuffer('image/png');
-  chart.destroy();
-  
-  return new Uint8Array(buffer);
+  let chart;
+  try {
+    chart = new Chart(ctx as any, config as any);
+    
+    // Aguarda renderização completa
+    await new Promise(resolve => setTimeout(resolve, 100));
+    
+    // Converte canvas para PNG bytes
+    const buffer = canvas.toBuffer('image/png');
+    
+    return new Uint8Array(buffer);
+  } catch (error) {
+    console.error('Erro na criação do gráfico de comparação de custos:', error);
+    throw new Error(`Falha na geração do gráfico de comparação de custos: ${error instanceof Error ? error.message : 'Erro desconhecido'}`);
+  } finally {
+    if (chart) {
+      chart.destroy();
+    }
+  }
 }
 
 /**
@@ -328,11 +397,23 @@ export async function generateCustomChart(
     }
   };
 
-  const chart = new Chart(ctx as any, mergedConfig as any);
-  
-  // Converte canvas para PNG bytes
-  const buffer = canvas.toBuffer('image/png');
-  chart.destroy();
-  
-  return new Uint8Array(buffer);
+  let chart;
+  try {
+    chart = new Chart(ctx as any, config as any);
+    
+    // Aguarda renderização completa
+    await new Promise(resolve => setTimeout(resolve, 100));
+    
+    // Converte canvas para PNG bytes
+    const buffer = canvas.toBuffer('image/png');
+    
+    return new Uint8Array(buffer);
+  } catch (error) {
+    console.error('Erro na criação do gráfico:', error);
+    throw new Error(`Falha na geração do gráfico de payback: ${error instanceof Error ? error.message : 'Erro desconhecido'}`);
+  } finally {
+    if (chart) {
+      chart.destroy();
+    }
+  }
 }

@@ -144,6 +144,27 @@ export function PropostaSolarModal({ isOpen, onClose }: PropostaSolarModalProps)
     setIsGenerating(true);
 
     try {
+      console.log('Iniciando geração de PDF...');
+      console.log('Dados do formulário:', formData);
+
+      // Validar dados críticos antes da geração
+      if (!formData.client.nome || formData.client.nome.trim() === '') {
+        throw new Error('Nome do cliente é obrigatório');
+      }
+      
+      if (formData.finance.capexBRL <= 0) {
+        throw new Error('Valor do investimento deve ser maior que zero');
+      }
+      
+      if (formData.kpis.economiaAnualBRL <= 0) {
+        throw new Error('Economia anual deve ser maior que zero');
+      }
+      
+      if (formData.kpis.energiaMensalKWh <= 0) {
+        throw new Error('Energia mensal deve ser maior que zero');
+      }
+
+      console.log('Gerando gráfico de payback...');
       // Gerar gráficos automaticamente
       const paybackChart = await generatePaybackChart(
         formData.finance.capexBRL,
@@ -152,15 +173,19 @@ export function PropostaSolarModal({ isOpen, onClose }: PropostaSolarModalProps)
         800,
         500
       );
+      console.log('Gráfico de payback gerado com sucesso');
 
+      console.log('Gerando gráfico de geração anual...');
       const geracaoChart = await generateGeracaoAnualChart(
         formData.kpis.energiaMensalKWh,
-        formData.finance.degradacaoAnual,
+        formData.finance.degradacaoAnual || 0.005,
         25,
         800,
         500
       );
+      console.log('Gráfico de geração anual gerado com sucesso');
 
+      console.log('Gerando PDF...');
       // Gerar PDF
       const pdfBytes = await buildSolarProposalPDF(formData, {
         charts: {
@@ -168,23 +193,45 @@ export function PropostaSolarModal({ isOpen, onClose }: PropostaSolarModalProps)
           geracaoAnualChart: geracaoChart
         }
       });
+      console.log('PDF gerado com sucesso');
 
       // Download automático
       const blob = new Blob([pdfBytes], { type: 'application/pdf' });
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.download = `Proposta-Solar-${formData.client.nome.replace(/\s+/g, '-')}-${formData.dataISO}.pdf`;
+      
+      // Sanitizar nome do arquivo
+      const clienteNome = formData.client.nome.trim().replace(/[^a-zA-Z0-9\s-]/g, '').replace(/\s+/g, '-');
+      link.download = `Proposta-Solar-${clienteNome}-${formData.dataISO}.pdf`;
+      
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
       URL.revokeObjectURL(url);
 
+      console.log('Download iniciado com sucesso');
       // Fechar modal após sucesso
       onClose();
     } catch (error) {
-      console.error('Erro ao gerar PDF:', error);
-      alert('Erro ao gerar PDF. Verifique os dados e tente novamente.');
+      console.error('Erro detalhado ao gerar PDF:', error);
+      
+      let errorMessage = 'Erro ao gerar PDF. ';
+      
+      if (error instanceof Error) {
+        errorMessage += error.message;
+      } else if (typeof error === 'string') {
+        errorMessage += error;
+      } else {
+        errorMessage += 'Verifique os dados e tente novamente.';
+      }
+      
+      // Verificar se é erro específico do Chart.js ou Canvas
+      if (error instanceof Error && error.message.includes('canvas')) {
+        errorMessage = 'Erro na geração de gráficos. Verifique se todos os valores numéricos estão corretos.';
+      }
+      
+      alert(errorMessage);
     } finally {
       setIsGenerating(false);
     }
