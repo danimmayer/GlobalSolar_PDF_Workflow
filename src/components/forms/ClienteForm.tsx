@@ -3,7 +3,7 @@
 // Suporta tanto CPF quanto CNPJ com validação automática
 
 import React from 'react';
-import { User, MapPin, CreditCard } from 'lucide-react';
+import { User, MapPin, CreditCard, Building2, Info } from 'lucide-react';
 import type { Client } from '../../proposta-solar-pdf';
 
 interface ClienteFormProps {
@@ -187,10 +187,20 @@ export function ClienteForm({ data, onChange, errors }: ClienteFormProps) {
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Tipo de Cliente
           </label>
-          <div className="px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg text-sm text-gray-600">
-            {documentType === 'cpf' && '👤 Pessoa Física'}
-            {documentType === 'cnpj' && '🏢 Pessoa Jurídica'}
-            {documentType === 'unknown' && '❓ Não identificado'}
+          <div className="px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg text-sm text-gray-600 flex items-center gap-2">
+            {documentType === 'cpf' && (
+              <>
+                <User className="w-4 h-4" />
+                Pessoa Física
+              </>
+            )}
+            {documentType === 'cnpj' && (
+              <>
+                <Building2 className="w-4 h-4" />
+                Pessoa Jurídica
+              </>
+            )}
+            {documentType === 'unknown' && 'Não identificado'}
           </div>
         </div>
 
@@ -219,7 +229,10 @@ export function ClienteForm({ data, onChange, errors }: ClienteFormProps) {
 
       {/* Informações Adicionais */}
       <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-        <h4 className="text-sm font-medium text-blue-800 mb-2">💡 Informações:</h4>
+        <div className="flex items-center gap-2 mb-2">
+          <Info className="w-4 h-4 text-blue-600" />
+          <h4 className="text-sm font-medium text-blue-800">Informações Importantes:</h4>
+        </div>
         <ul className="text-sm text-blue-700 space-y-1">
           <li>• O sistema detecta automaticamente se é CPF ou CNPJ</li>
           <li>• CPF/CNPJ é opcional, mas recomendado para contratos formais</li>

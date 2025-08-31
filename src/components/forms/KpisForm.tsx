@@ -3,7 +3,7 @@
 // Inclui cálculos automáticos e validação de valores
 
 import React, { useEffect } from 'react';
-import { TrendingUp, DollarSign, Zap, Calculator } from 'lucide-react';
+import { TrendingUp, DollarSign, Zap, Calculator, Info } from 'lucide-react';
 import type { Kpis, Finance } from '../../proposta-solar-pdf';
 
 interface KpisFormProps {
@@ -295,9 +295,12 @@ export function KpisForm({ kpis, finance, onChange, errors }: KpisFormProps) {
       </div>
 
       {/* Dicas */}
-      <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
-        <h4 className="text-sm font-medium text-amber-800 mb-2">💡 Dicas para Preenchimento:</h4>
-        <ul className="text-sm text-amber-700 space-y-1">
+      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <div className="flex items-center gap-2 mb-2">
+            <Info className="w-4 h-4 text-blue-600" />
+            <h4 className="text-sm font-medium text-blue-800">Dicas para Preenchimento:</h4>
+          </div>
+        <ul className="text-sm text-blue-700 space-y-1">
           <li>• Use dados reais da conta de energia do cliente para maior precisão</li>
           <li>• A potência deve considerar o espaço disponível e consumo</li>
           <li>• Geração mensal varia conforme região e orientação dos módulos</li>

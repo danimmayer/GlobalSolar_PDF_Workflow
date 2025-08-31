@@ -3,7 +3,7 @@
 // Organizado em abas com validação e integração direta com geração de PDF
 
 import React, { useState, useCallback } from 'react';
-import { X, FileText, Download, Eye, AlertCircle } from 'lucide-react';
+import { X, FileText, Download, Eye, AlertCircle, Building2, User, TrendingUp, Zap, FileCheck, Search } from 'lucide-react';
 import { buildSolarProposalPDF, type SolarProposalData } from '../proposta-solar-pdf';
 import { generatePaybackChart, generateGeracaoAnualChart } from '../chart-generator';
 import { EmpresaForm } from './forms/EmpresaForm';
@@ -67,12 +67,12 @@ export function PropostaSolarModal({ isOpen, onClose }: PropostaSolarModalProps)
   });
 
   const tabs = [
-    { id: 'empresa' as TabType, label: 'Empresa', icon: '🏢' },
-    { id: 'cliente' as TabType, label: 'Cliente', icon: '👤' },
-    { id: 'kpis' as TabType, label: 'KPIs & Financeiro', icon: '📊' },
-    { id: 'itens' as TabType, label: 'Itens do Sistema', icon: '⚡' },
-    { id: 'observacoes' as TabType, label: 'Observações', icon: '📝' },
-    { id: 'preview' as TabType, label: 'Preview', icon: '👁️' }
+    { id: 'empresa' as TabType, label: 'Empresa', icon: Building2 },
+    { id: 'cliente' as TabType, label: 'Cliente', icon: User },
+    { id: 'kpis' as TabType, label: 'KPIs & Financeiro', icon: TrendingUp },
+    { id: 'itens' as TabType, label: 'Itens do Sistema', icon: Zap },
+    { id: 'observacoes' as TabType, label: 'Observações', icon: FileCheck },
+    { id: 'preview' as TabType, label: 'Preview', icon: Search }
   ];
 
   /**
@@ -165,6 +165,14 @@ export function PropostaSolarModal({ isOpen, onClose }: PropostaSolarModalProps)
       }
 
       console.log('Gerando gráfico de payback...');
+      console.log('Parâmetros do payback:', {
+        capexBRL: formData.finance.capexBRL,
+        economiaAnualBRL: formData.kpis.economiaAnualBRL,
+        anos: 25,
+        width: 800,
+        height: 500
+      });
+      
       // Gerar gráficos automaticamente
       const paybackChart = await generatePaybackChart(
         formData.finance.capexBRL,
@@ -176,6 +184,14 @@ export function PropostaSolarModal({ isOpen, onClose }: PropostaSolarModalProps)
       console.log('Gráfico de payback gerado com sucesso');
 
       console.log('Gerando gráfico de geração anual...');
+      console.log('Parâmetros da geração anual:', {
+        energiaMensalKWh: formData.kpis.energiaMensalKWh,
+        degradacaoAnual: formData.finance.degradacaoAnual || 0.005,
+        anos: 25,
+        width: 800,
+        height: 500
+      });
+      
       const geracaoChart = await generateGeracaoAnualChart(
         formData.kpis.energiaMensalKWh,
         formData.finance.degradacaoAnual || 0.005,
@@ -215,10 +231,14 @@ export function PropostaSolarModal({ isOpen, onClose }: PropostaSolarModalProps)
       onClose();
     } catch (error) {
       console.error('Erro detalhado ao gerar PDF:', error);
+      console.error('Stack trace completo:', error instanceof Error ? error.stack : 'N/A');
+      console.error('Tipo do erro:', typeof error);
+      console.error('Nome do erro:', error instanceof Error ? error.name : 'N/A');
       
       let errorMessage = 'Erro ao gerar PDF. ';
       
       if (error instanceof Error) {
+        console.error('Mensagem detalhada do erro:', error.message);
         errorMessage += error.message;
       } else if (typeof error === 'string') {
         errorMessage += error;
@@ -293,7 +313,7 @@ export function PropostaSolarModal({ isOpen, onClose }: PropostaSolarModalProps)
                   `}
                   aria-current={isActive ? 'page' : undefined}
                 >
-                  <span>{tab.icon}</span>
+                  <tab.icon className="w-4 h-4" />
                   {tab.label}
                   {hasErrors && (
                     <AlertCircle className="w-4 h-4 text-red-500" aria-label="Erros nesta seção" />

@@ -3,7 +3,7 @@
 // Permite adicionar, editar e organizar informações complementares
 
 import React, { useState } from 'react';
-import { Plus, Trash2, Edit3, FileText, Settings, Lightbulb } from 'lucide-react';
+import { Plus, Trash2, Edit3, FileText, Settings, Lightbulb, Clipboard, Info } from 'lucide-react';
 
 interface ObservacoesFormProps {
   observacoes: string[];
@@ -197,9 +197,10 @@ export function ObservacoesForm({ observacoes, premissasTecnicas, onChange }: Ob
         <div className="flex gap-2">
           <button
             onClick={() => setShowTemplates(!showTemplates)}
-            className="px-3 py-2 text-sm bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+            className="px-3 py-2 text-sm bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors flex items-center gap-2"
           >
-            📋 Templates
+            <Clipboard className="w-4 h-4" />
+            Templates
           </button>
           <button
             onClick={() => setIsAdding(true)}
@@ -345,9 +346,12 @@ export function ObservacoesForm({ observacoes, premissasTecnicas, onChange }: Ob
       </div>
 
       {/* Dicas */}
-      <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
-        <h4 className="text-sm font-medium text-amber-800 mb-2">💡 Dicas:</h4>
-        <div className="text-sm text-amber-700 space-y-1">
+      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+        <div className="flex items-center gap-2 mb-2">
+          <Info className="w-4 h-4 text-blue-600" />
+          <h4 className="text-sm font-medium text-blue-800">Dicas Importantes:</h4>
+        </div>
+        <div className="text-sm text-blue-700 space-y-1">
           {activeSection === 'observacoes' ? (
             <>
               <p>• Inclua condições de pagamento, prazos de validade e garantias</p>

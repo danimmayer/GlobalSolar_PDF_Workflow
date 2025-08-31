@@ -3,7 +3,6 @@
 // Usado para criar gráficos que serão inseridos no PDF
 
 import { Chart, ChartConfiguration, registerables } from 'chart.js';
-import { createCanvas } from 'canvas';
 
 // Registra todos os componentes do Chart.js
 Chart.register(...registerables);
@@ -78,8 +77,14 @@ export async function generatePaybackChart(
     throw new Error('Dimensões do gráfico devem ser maiores que zero');
   }
 
-  const canvas = createCanvas(width, height);
+  const canvas = document.createElement('canvas');
+  canvas.width = width;
+  canvas.height = height;
   const ctx = canvas.getContext('2d');
+  
+  if (!ctx) {
+    throw new Error('Não foi possível obter o contexto 2D do canvas');
+  }
 
   // Calcula fluxo de caixa acumulado
   const labels: string[] = [];
@@ -145,9 +150,22 @@ export async function generatePaybackChart(
     await new Promise(resolve => setTimeout(resolve, 100));
     
     // Converte canvas para PNG bytes
-    const buffer = canvas.toBuffer('image/png');
-    
-    return new Uint8Array(buffer);
+    return new Promise<Uint8Array>((resolve, reject) => {
+      canvas.toBlob((blob) => {
+        if (!blob) {
+          reject(new Error('Falha ao converter canvas para blob'));
+          return;
+        }
+        
+        const reader = new FileReader();
+        reader.onload = () => {
+          const arrayBuffer = reader.result as ArrayBuffer;
+          resolve(new Uint8Array(arrayBuffer));
+        };
+        reader.onerror = () => reject(new Error('Falha ao ler blob'));
+        reader.readAsArrayBuffer(blob);
+      }, 'image/png');
+    });
   } catch (error) {
     console.error('Erro na criação do gráfico de payback:', error);
     throw new Error(`Falha na geração do gráfico de payback: ${error instanceof Error ? error.message : 'Erro desconhecido'}`);
@@ -185,8 +203,14 @@ export async function generateGeracaoAnualChart(
   if (!width || width <= 0 || !height || height <= 0) {
     throw new Error('Dimensões do gráfico devem ser maiores que zero');
   }
-  const canvas = createCanvas(width, height);
+  const canvas = document.createElement('canvas');
+  canvas.width = width;
+  canvas.height = height;
   const ctx = canvas.getContext('2d');
+  
+  if (!ctx) {
+    throw new Error('Não foi possível obter o contexto 2D do canvas');
+  }
 
   // Simula variação sazonal (verão mais alto, inverno mais baixo)
   const fatoresSazonais = [
@@ -271,9 +295,22 @@ export async function generateGeracaoAnualChart(
     await new Promise(resolve => setTimeout(resolve, 100));
     
     // Converte canvas para PNG bytes
-    const buffer = canvas.toBuffer('image/png');
-    
-    return new Uint8Array(buffer);
+    return new Promise<Uint8Array>((resolve, reject) => {
+      canvas.toBlob((blob) => {
+        if (!blob) {
+          reject(new Error('Falha ao converter canvas para blob'));
+          return;
+        }
+        
+        const reader = new FileReader();
+        reader.onload = () => {
+          const arrayBuffer = reader.result as ArrayBuffer;
+          resolve(new Uint8Array(arrayBuffer));
+        };
+        reader.onerror = () => reject(new Error('Falha ao ler blob'));
+        reader.readAsArrayBuffer(blob);
+      }, 'image/png');
+    });
   } catch (error) {
     console.error('Erro na criação do gráfico de geração anual:', error);
     throw new Error(`Falha na geração do gráfico de geração anual: ${error instanceof Error ? error.message : 'Erro desconhecido'}`);
@@ -295,8 +332,14 @@ export async function generateCostComparisonChart(
   width: number = 600,
   height: number = 400
 ): Promise<Uint8Array> {
-  const canvas = createCanvas(width, height);
+  const canvas = document.createElement('canvas');
+  canvas.width = width;
+  canvas.height = height;
   const ctx = canvas.getContext('2d');
+  
+  if (!ctx) {
+    throw new Error('Não foi possível obter o contexto 2D do canvas');
+  }
 
   const config: ChartConfiguration = {
     type: 'bar',
@@ -362,9 +405,22 @@ export async function generateCostComparisonChart(
     await new Promise(resolve => setTimeout(resolve, 100));
     
     // Converte canvas para PNG bytes
-    const buffer = canvas.toBuffer('image/png');
-    
-    return new Uint8Array(buffer);
+    return new Promise<Uint8Array>((resolve, reject) => {
+      canvas.toBlob((blob) => {
+        if (!blob) {
+          reject(new Error('Falha ao converter canvas para blob'));
+          return;
+        }
+        
+        const reader = new FileReader();
+        reader.onload = () => {
+          const arrayBuffer = reader.result as ArrayBuffer;
+          resolve(new Uint8Array(arrayBuffer));
+        };
+        reader.onerror = () => reject(new Error('Falha ao ler blob'));
+        reader.readAsArrayBuffer(blob);
+      }, 'image/png');
+    });
   } catch (error) {
     console.error('Erro na criação do gráfico de comparação de custos:', error);
     throw new Error(`Falha na geração do gráfico de comparação de custos: ${error instanceof Error ? error.message : 'Erro desconhecido'}`);
@@ -384,8 +440,14 @@ export async function generateCustomChart(
   width: number = 600,
   height: number = 400
 ): Promise<Uint8Array> {
-  const canvas = createCanvas(width, height);
+  const canvas = document.createElement('canvas');
+  canvas.width = width;
+  canvas.height = height;
   const ctx = canvas.getContext('2d');
+  
+  if (!ctx) {
+    throw new Error('Não foi possível obter o contexto 2D do canvas');
+  }
 
   // Aplica configurações base se não especificadas
   const mergedConfig: ChartConfiguration = {
@@ -405,9 +467,22 @@ export async function generateCustomChart(
     await new Promise(resolve => setTimeout(resolve, 100));
     
     // Converte canvas para PNG bytes
-    const buffer = canvas.toBuffer('image/png');
-    
-    return new Uint8Array(buffer);
+    return new Promise<Uint8Array>((resolve, reject) => {
+      canvas.toBlob((blob) => {
+        if (!blob) {
+          reject(new Error('Falha ao converter canvas para blob'));
+          return;
+        }
+        
+        const reader = new FileReader();
+        reader.onload = () => {
+          const arrayBuffer = reader.result as ArrayBuffer;
+          resolve(new Uint8Array(arrayBuffer));
+        };
+        reader.onerror = () => reject(new Error('Falha ao ler blob'));
+        reader.readAsArrayBuffer(blob);
+      }, 'image/png');
+    });
   } catch (error) {
     console.error('Erro na criação do gráfico:', error);
     throw new Error(`Falha na geração do gráfico de payback: ${error instanceof Error ? error.message : 'Erro desconhecido'}`);

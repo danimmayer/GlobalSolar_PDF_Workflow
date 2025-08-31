@@ -3,7 +3,7 @@
 // Inclui validação de CNPJ e campos obrigatórios
 
 import React from 'react';
-import { Building2, Mail, MapPin, Phone } from 'lucide-react';
+import { Building2, Mail, MapPin, Phone, Info } from 'lucide-react';
 import type { Company } from '../../proposta-solar-pdf';
 
 interface EmpresaFormProps {
@@ -157,7 +157,10 @@ export function EmpresaForm({ data, onChange, errors }: EmpresaFormProps) {
 
       {/* Dicas */}
       <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-        <h4 className="text-sm font-medium text-blue-800 mb-2">💡 Dicas:</h4>
+          <div className="flex items-center gap-2 mb-2">
+            <Info className="w-4 h-4 text-blue-600" />
+            <h4 className="text-sm font-medium text-blue-800">Dicas Importantes:</h4>
+          </div>
         <ul className="text-sm text-blue-700 space-y-1">
           <li>• O nome da empresa aparecerá no cabeçalho da proposta</li>
           <li>• CNPJ é opcional, mas recomendado para propostas comerciais</li>
