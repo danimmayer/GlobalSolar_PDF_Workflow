@@ -14,7 +14,7 @@ Chart.register(...registerables);
  */
 const baseChartOptions = {
   responsive: false,
-  animation: false,
+  animation: false as const,
   plugins: {
     legend: {
       position: 'top' as const,
@@ -48,7 +48,7 @@ const baseChartOptions = {
       }
     }
   }
-};
+} as const;
 
 /**
  * Gera gráfico de payback (fluxo de caixa acumulado)
@@ -319,15 +319,16 @@ export async function generateCustomChart(
   const ctx = canvas.getContext('2d');
 
   // Aplica configurações base se não especificadas
-  const mergedConfig = {
+  const mergedConfig: ChartConfiguration = {
     ...config,
     options: {
       ...baseChartOptions,
-      ...config.options
+      ...config.options,
+      animation: false
     }
   };
 
-  const chart = new Chart(ctx as any, mergedConfig);
+  const chart = new Chart(ctx as any, mergedConfig as any);
   
   // Converte canvas para PNG bytes
   const buffer = canvas.toBuffer('image/png');
