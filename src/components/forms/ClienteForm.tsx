@@ -124,7 +124,7 @@ export function ClienteForm({ data, onChange, errors }: ClienteFormProps) {
             htmlFor="cliente-nome" 
             className="block text-sm font-medium text-gray-700 mb-2"
           >
-            Nome do Cliente *
+            Nome do Cliente <span className="text-red-500">*</span>
           </label>
           <input
             id="cliente-nome"

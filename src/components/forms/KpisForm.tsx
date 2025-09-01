@@ -4,7 +4,7 @@
 
 import React, { useEffect } from 'react';
 import { TrendingUp, DollarSign, Zap, Calculator, Info } from 'lucide-react';
-import type { Kpis, Finance } from '../../proposta-solar-pdf';
+import type { Kpis, Finance } from '../../types/proposta-solar-pdf';
 
 interface KpisFormProps {
   kpis: Kpis;
@@ -125,7 +125,7 @@ export function KpisForm({ kpis, finance, onChange, errors }: KpisFormProps) {
               htmlFor="potencia-kwp" 
               className="block text-sm font-medium text-gray-700 mb-2"
             >
-              Potência do Sistema (kWp) *
+              Potência do Sistema (kWp) <span className="text-red-500">*</span>
             </label>
             <input
               id="potencia-kwp"
@@ -149,7 +149,7 @@ export function KpisForm({ kpis, finance, onChange, errors }: KpisFormProps) {
               htmlFor="energia-mensal" 
               className="block text-sm font-medium text-gray-700 mb-2"
             >
-              Geração Mensal Estimada (kWh) *
+              Geração Mensal Estimada (kWh) <span className="text-red-500">*</span>
             </label>
             <input
               id="energia-mensal"
@@ -207,7 +207,7 @@ export function KpisForm({ kpis, finance, onChange, errors }: KpisFormProps) {
               htmlFor="capex" 
               className="block text-sm font-medium text-gray-700 mb-2"
             >
-              Investimento Total (R$) *
+              Investimento Total (R$) <span className="text-red-500">*</span>
             </label>
             <input
               id="capex"
@@ -231,7 +231,7 @@ export function KpisForm({ kpis, finance, onChange, errors }: KpisFormProps) {
               htmlFor="tarifa" 
               className="block text-sm font-medium text-gray-700 mb-2"
             >
-              Tarifa de Energia (R$/kWh) *
+              Tarifa de Energia (R$/kWh) <span className="text-red-500">*</span>
             </label>
             <input
               id="tarifa"

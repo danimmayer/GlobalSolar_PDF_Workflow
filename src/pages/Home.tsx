@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FileText, Zap, TrendingUp, Download, Plus } from 'lucide-react';
-import { PropostaSolarModal } from '../components/PropostaSolarModal';
+import PropostaFlowFullscreen from '../components/PropostaFlowFullscreen';
 
 
 /**
@@ -8,7 +8,7 @@ import { PropostaSolarModal } from '../components/PropostaSolarModal';
  * Interface para geração de propostas solares com PDF automático
  */
 export default function Home() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isFlowOpen, setIsFlowOpen] = useState(false);
 
   const features = [
     {
@@ -48,7 +48,7 @@ export default function Home() {
             </div>
             
             <button
-              onClick={() => setIsModalOpen(true)}
+              onClick={() => setIsFlowOpen(true)}
               className="bg-orange-600 text-white px-6 py-3 rounded-lg hover:bg-orange-700 transition-colors flex items-center gap-2 font-medium shadow-lg"
             >
               <Plus className="w-5 h-5" />
@@ -72,7 +72,7 @@ export default function Home() {
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button
-              onClick={() => setIsModalOpen(true)}
+              onClick={() => setIsFlowOpen(true)}
               className="bg-gradient-to-r from-orange-600 to-amber-600 text-white px-8 py-4 rounded-lg hover:from-orange-700 hover:to-amber-700 transition-all duration-200 flex items-center gap-3 font-semibold text-lg shadow-xl transform hover:scale-105"
             >
               <FileText className="w-6 h-6" />
@@ -155,7 +155,7 @@ export default function Home() {
           </p>
           
           <button
-            onClick={() => setIsModalOpen(true)}
+            onClick={() => setIsFlowOpen(true)}
             className="bg-white text-orange-600 px-8 py-4 rounded-lg hover:bg-gray-100 transition-colors font-semibold text-lg shadow-lg"
           >
             Começar Agora - É Grátis
@@ -173,9 +173,9 @@ export default function Home() {
       </footer>
 
       {/* Modal */}
-      <PropostaSolarModal 
-        isOpen={isModalOpen} 
-        onClose={() => setIsModalOpen(false)} 
+      <PropostaFlowFullscreen 
+        isOpen={isFlowOpen} 
+        onClose={() => setIsFlowOpen(false)} 
       />
     </div>
   );

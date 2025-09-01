@@ -73,7 +73,7 @@ export function EmpresaForm({ data, onChange, errors }: EmpresaFormProps) {
             htmlFor="empresa-nome" 
             className="block text-sm font-medium text-gray-700 mb-2"
           >
-            Nome da Empresa *
+            Nome da Empresa <span className="text-red-500">*</span>
           </label>
           <input
             id="empresa-nome"
